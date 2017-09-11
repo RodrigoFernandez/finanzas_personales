@@ -38,15 +38,20 @@ def procesar(cvs_actual, cvs_anterior):
 	
 	rta = []
 	for clave in claves:
+		valor_previo = 0
+		
+		if clave in fondo_previo.keys():
+			valor_previo = fondo_previo[clave][2]
+		
 		rta.append((clave,
 					fondo_actual[clave][0],
 					fondo_actual[clave][1],
 					fondo_actual[clave][0],
 					fondo_actual[clave][2],
 					fondo_actual[clave][0],
-					fondo_previo[clave][2],
+					valor_previo,
 					fondo_actual[clave][0],
-					fondo_actual[clave][2]-fondo_previo[clave][2]))
+					fondo_actual[clave][2]-valor_previo))
 	
 	return rta
 
