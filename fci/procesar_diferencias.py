@@ -63,11 +63,29 @@ def procesar(cvs_actual, cvs_anterior):
 					cuotapartes_anteriores,
 					precio_previo))
 	
-	return rta
+	en_pesos = []
+	en_dolares = []
+	for una_rta in rta:
+		if una_rta[1] == '$':
+			en_pesos.append(una_rta)
+		else:
+			en_dolares.append(una_rta)
+	
+	return en_pesos + en_dolares
 
 def get_output_string(unProcesado):
-	return "{} ({} << {}):\n {} {:f} [{:f}] => {} {:f} - {} {:f} = {} {:f}\n".format(unProcesado[0],
+	cuota_partes_previas = float(unProcesado[10])
+	cuota_partes_actuales = float(unProcesado[9])
+	
+	separador_cuota_partes = '=='
+	if cuota_partes_previas > cuota_partes_actuales:
+		separador_cuota_partes = '--'
+	elif cuota_partes_previas < cuota_partes_actuales:
+		separador_cuota_partes = '++'
+	
+	return "{} ({} {} {}):\n {} {:f} [{:f}] => {} {:f} - {} {:f} = {} {:f}\n".format(unProcesado[0],
 																		unProcesado[9],
+																		separador_cuota_partes,
 																		unProcesado[10],
 																		unProcesado[1],
 																		unProcesado[2],
@@ -124,6 +142,7 @@ if __name__ == '__main__':
 		nombre_archivo_salida = get_archivo_salida_con_formato(args.exportar)
 		
 		archivo_salida = open(nombre_archivo_salida, 'w')
+		
 		for procesado in procesados:
 			archivo_salida.write(get_output_string(procesado) + "\n")
 		archivo_salida.close()
